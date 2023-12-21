@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Encrypted Files</title>
+</head>
+<body>
+    <h1>Encrypted Files</h1>
+    <ul>
+        {% for encrypted_file in encrypted_files %}
+            <li>
+                <a href="{{ encrypted_file.file.url }}" download>{{ encrypted_file }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
