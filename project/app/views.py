@@ -79,6 +79,7 @@ def upload_file(request):
         tem=request.session['uid']
         uploaded_file = request.FILES.get('file')
         password = request.POST.get('password')
+        algorith = request.POST.get('algorith')
 
 
         if uploaded_file:  # Check if a file was uploaded
@@ -89,7 +90,7 @@ def upload_file(request):
             
             if vpro:
                 # Save the uploaded file to the model associated with the user
-                encrypted_file = EncryptedFile(user_id=vpro, file=uploaded_file, password=password)
+                encrypted_file = EncryptedFile(user_id=vpro, file=uploaded_file, password=password,algorith=algorith)
                 print(encrypted_file)
                 encrypted_file.save()
 

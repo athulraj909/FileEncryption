@@ -15,34 +15,39 @@ class User(models.Model):
 
 
 class EncryptedFile(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)  # Foreign key relationship
+    algorithm_choices = [
+        ('hashes.SHA256', 'hashes.SHA256'),
+        ('hashes.SHA384', 'hashes.SHA384'),
+        ('hashes.SHA512', 'hashes.SHA512'),
+        # Add more algorithms as needed
+    ]
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     file = models.FileField()
     password = models.CharField(max_length=100)
-    
+    algorith = models.CharField(max_length=20, choices=algorithm_choices)
 
     def save(self, *args, **kwargs):
         if not self.id:  # New instance being created
-            super().save(*args, **kwargs)  # Save the model to ensure the file is saved
+            super().save(*args, **kwargs)
             
-            # Get or generate the password and salt values
-            password_bytes = self.password.encode()  # Convert password to bytes
-            salt = b'salt_'  # Your own salt value
+            password_bytes = self.password.encode()
+            salt = b'salt_'  # Change this to a proper salt value
             
-            # Generate a key using the password and salt
-            key = generate_key(password_bytes, salt)
+            # Generate a key using the password and the chosen algorithm
+            key = generate_key(password_bytes, self.algorith, salt)
             
-            # Read the file content from the uploaded file
             with open(self.file.path, 'rb') as file:
                 file_content = file.read()
             
-            # Encrypt the file content before saving
+            # Encrypt the file content using the generated key
             encrypted_content = encrypt_file(file_content, key)
             
-            # Overwrite the file content with the encrypted content
+            # Save the encrypted content back to the file
             with open(self.file.path, 'wb') as file:
                 file.write(encrypted_content)
         
         super().save(*args, **kwargs)
+
 
     def __str__(self):
         return self.file.name

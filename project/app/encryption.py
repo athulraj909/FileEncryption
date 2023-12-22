@@ -10,18 +10,27 @@ from cryptography.fernet import Fernet
 import base64
 
 
-def generate_key(password, salt):
+def generate_key(password, algorith, salt):
+    # Convert algorithm string to the actual algorithm object
+    if algorith == 'hashes.SHA256':
+        algo = hashes.SHA256()
+    elif algorith == 'hashes.SHA384':
+        algo = hashes.SHA384()
+    elif algorith == 'hashes.SHA512':
+        algo = hashes.SHA512()
+    else:
+        # Handle the case when an invalid algorithm is provided
+        raise ValueError("Invalid algorithm")
+    
     kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
+        algorithm=algo,
         length=32,
         salt=salt,
-        iterations=100000,  # Adjust the number of iterations as needed
+        iterations=100000,
         backend=default_backend()
     )
     key = base64.urlsafe_b64encode(kdf.derive(password))
     return key
-
-
 
 
 
