@@ -32,6 +32,9 @@ urlpatterns = [
     path('update/userupdates/<int:id>',views.userupdate, name='userupdate'),
     path('upload', views.upload_file),
     path('select/', views.select),
+    path('history',views.history),
+    path('decrypt',views.decrypt),
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

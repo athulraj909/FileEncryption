@@ -8,6 +8,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 import os
 from cryptography.fernet import Fernet
 import base64
+import hashlib
 
 
 def generate_key(password, algorith, salt):
@@ -43,3 +44,25 @@ def decrypt_file(encrypted_content, key):
     f = Fernet(key)
     decrypted_content = f.decrypt(encrypted_content)
     return decrypted_content
+
+
+
+def derive_key_from_password(password, algorithm):
+    if password is None:
+        raise ValueError("Password is required")
+    
+    # Use a salt value for key derivation
+    salt = b'some_salt_value'  # Replace this with a proper salt value
+    
+    if algorithm == 'hashes.SHA256':
+        kdf = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    elif algorithm == 'hashes.SHA384':
+        kdf = hashlib.pbkdf2_hmac('sha384', password.encode('utf-8'), salt, 100000)
+    elif algorithm == 'hashes.SHA512':
+        kdf = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), salt, 100000)
+    else:
+        raise ValueError("Invalid algorithm")
+
+    key = base64.urlsafe_b64encode(kdf)
+    return key
+

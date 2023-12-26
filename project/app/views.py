@@ -2,8 +2,11 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from  django.core.files.storage import FileSystemStorage
 from django.conf import settings
+from .encryption import decrypt_file,derive_key_from_password 
 from .models import User
 from .models import EncryptedFile
+from .models import DecryptionRequest
+
 
 
 def index(request):
@@ -86,12 +89,11 @@ def upload_file(request):
             # Retrieve the user from the session
             
             vpro=User.objects.get(id=tem)
-            print(vpro)
+        
             
             if vpro:
                 # Save the uploaded file to the model associated with the user
                 encrypted_file = EncryptedFile(user_id=vpro, file=uploaded_file, password=password,algorith=algorith)
-                print(encrypted_file)
                 encrypted_file.save()
 
                 return redirect(userprofile)  # Redirect to the user profile page
@@ -108,5 +110,43 @@ def select(request):
     tem = request.session['uid']
     vpro = User.objects.get(id=tem)
     encrypted_files = EncryptedFile.objects.filter(user_id=vpro)
-    return render(request, 'select.html', {'encrypted_files': encrypted_files})
+    return render(request,'select.html',{'encrypted_files': encrypted_files})
+
+def history(request):
+    tem = request.session['uid']
+    vpro = User.objects.get(id=tem)
+    encrypted_files = EncryptedFile.objects.filter(user_id=vpro)
+    return render(request,'history.html',{'encrypted_files':encrypted_files})
+
+
+ # Import your decryption function
+
+
+
+def decrypt(request):
+    if request.method == 'POST':
+        tem = request.session.get('uid')
+        uploaded_file = request.FILES.get('file')
+        password = request.POST.get('password')
+        algorith = request.POST.get('algorithm')
+        
+        if uploaded_file:  # Check if a file was uploaded
+            # Retrieve the user from the session
+            
+            vpro=User.objects.get(id=tem)
+        
+            
+            if vpro:
+                # Save the uploaded file to the model associated with the user
+                decrypted_file = DecryptionRequest(user_id=vpro, uploaded_file=uploaded_file, password=password, algorith=algorith)
+                decrypted_file.save()
+
+                return redirect(userprofile)  # Redirect to the user profile page
+            else:
+                return HttpResponse("error")
+        else:
+            return HttpResponse("Error: No file uploaded")
+    else:
+
+        return redirect(userprofile)
 

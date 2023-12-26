@@ -246,7 +246,7 @@
     <ul style="list-style-type: none;">
         {% for encrypted_file in encrypted_files %}
             <li style="margin-top: 20px;">
-                <a href="{{ encrypted_file.file.url }}" download style="color: white;">{{ encrypted_file }}</a>
+                <a href="{{ encrypted_file.file.url }}" download style="color: white;">{{ encrypted_file.file }}</a>
             </li>
         {% endfor %}
     </ul>
