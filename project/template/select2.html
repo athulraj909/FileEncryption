@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Encrypted Files</title>
+</head>
+
+<style>
+
+  table{
+    width: 50%;
+    margin-top: 100px;
+  }
+  
+  caption{
+    
+    font-size: 25px;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+  }
+
+  tr:nth-child(odd) {
+      background-color: #E7E9EB;
+  }
+
+  a{
+    text-decoration: none;
+    color: black;
+    font-size: 18px;
+  }
+
+  td{
+    height: 35px;
+    padding-left: 20px;
+  }
+
+  button{
+        background-color: black;
+        color: white;
+        height: 26px;
+        font-size: 15px;
+        border-radius: 10px;
+        cursor:pointer;
+      }
+
+</style>
+
+
+<body>
+    <div align="center" style="margin-top: 50px;">
+    <table>
+      <caption>Decrypted Files</caption>
+        {% for decrypted_file in decrypted_files %}
+        <tr>
+          <td>{{ decrypted_file.uploaded_file }}</td>
+          <td><a href="{{ decrypted_file.uploaded_file.url }}" download><button>download</button></a></td>
+        </tr>          
+        {% endfor %}
+    </table>
+    </div>
+</body>
+</html>

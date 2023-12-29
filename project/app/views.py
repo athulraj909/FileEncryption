@@ -56,6 +56,13 @@ def login(request):
         return render(request, 'login.html', {'status': 'Invalid Username or Password'})
     
 
+def logout(request):
+    session_keys = list(request.session.keys())
+    for key in session_keys:
+      del request.session[key]
+    return redirect(index)
+    
+
 
 def userprofile(request):
     tem=request.session['uid']
@@ -150,3 +157,17 @@ def decrypt(request):
 
         return redirect(userprofile)
 
+
+
+def select2(request):
+    tem = request.session['uid']
+    vpro = User.objects.get(id=tem)
+    decrypted_files = DecryptionRequest.objects.filter(user_id=vpro)
+    return render(request,'select2.html',{'decrypted_files': decrypted_files})
+
+
+def history2(request):
+    tem = request.session['uid']
+    vpro = User.objects.get(id=tem)
+    decrypted_files = DecryptionRequest.objects.filter(user_id=vpro)
+    return render(request,'history2.html',{'decrypted_file':decrypted_files})

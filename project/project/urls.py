@@ -27,6 +27,7 @@ urlpatterns = [
     path('reg',views.reg),
     path('userregistration',views.userregistration),
     path('login',views.login),
+    path('logout',views.logout),
     path('userprofile',views.userprofile),
     path('update/<int:id>',views.update, name='update'),
     path('update/userupdates/<int:id>',views.userupdate, name='userupdate'),
@@ -34,6 +35,8 @@ urlpatterns = [
     path('select/', views.select),
     path('history',views.history),
     path('decrypt',views.decrypt),
+    path('select2/', views.select2),
+    path('history2',views.history2),
 
 ]
 if settings.DEBUG:

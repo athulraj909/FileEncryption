@@ -23,9 +23,10 @@ class EncryptedFile(models.Model):
         # Add more algorithms as needed
     ]
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    file = models.FileField(upload_to='upload/')
+    file = models.FileField()
     password = models.CharField(max_length=100)
     algorith = models.CharField(max_length=20, choices=algorithm_choices)
+    date = models.DateField(auto_now_add=True, null=True)
     
 
     def save(self, *args, **kwargs):
@@ -52,7 +53,7 @@ class EncryptedFile(models.Model):
 
 
     def __str__(self):
-        return self.file
+        return str(self.file)
 
 
 
@@ -66,9 +67,10 @@ class DecryptionRequest(models.Model):
         # Add more algorithms as needed
     ]
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    uploaded_file = models.FileField(upload_to='uploaddecry/')
+    uploaded_file = models.FileField()
     password = models.CharField(max_length=100)
-    algorith = models.CharField(max_length=20, choices=algorithm_choices)  # Store the algorithm used for encryption
+    algorith = models.CharField(max_length=20, choices=algorithm_choices)
+    date = models.DateField(auto_now_add=True, null=True)  # Store the algorithm used for encryption
 
 
     def save(self, *args, **kwargs):
@@ -96,4 +98,4 @@ class DecryptionRequest(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.uploaded_file
+        return str(self.uploaded_file)
