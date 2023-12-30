@@ -6,6 +6,8 @@ from .encryption import decrypt_file,derive_key_from_password
 from .models import User
 from .models import EncryptedFile
 from .models import DecryptionRequest
+from django.views.decorators.cache import cache_control
+
 
 
 
@@ -46,9 +48,13 @@ def login(request):
         userdetail=User.objects.get(username=request.POST['username'], password=password)
         if userdetail.password == request.POST['password']:
             request.session['uid'] = userdetail.id
-          
+            id=request.session['uid']
+            if(id):
+                print(id)
+                return redirect(userprofile)
+            else:
+                return redirect(login)
 
-            return redirect(userprofile)
         else:
             return render(request,'login.html',context)
         
@@ -62,19 +68,28 @@ def logout(request):
       del request.session[key]
     return redirect(index)
     
-
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 
 def userprofile(request):
-    tem=request.session['uid']
-    vpro=User.objects.get(id=tem)
-    return render(request,'landing.html',{'result':vpro})
+    tem = request.session.get('uid')
+    print(tem)
+    if tem:
+        vpro = User.objects.get(id=tem)
+        return render(request, 'landing.html', {'result': vpro})
+    else:
+        # Handle the case when 'uid' doesn't exist in the session
+        return redirect(login)
+
+
 
 
 def update(request,id):
     upt=User.objects.get(id=id)
-    return render(request,'profileedit.html',{'result':upt})
+    if(upt):
+        return render(request,'profileedit.html',{'result':upt})
 
 def userupdate(request,id):
+
     if request.method=="POST":
         email=request.POST.get('email')
         username = request.POST.get('username')
@@ -107,7 +122,7 @@ def upload_file(request):
             else:
                 return HttpResponse("error")
         else:
-            return HttpResponse("Error: No file uploaded")
+            return HttpResponse("<script>alert('no file uploaded'); window.location.href='/userprofile';</script>")
     else:
 
         return redirect(userprofile)
@@ -152,7 +167,8 @@ def decrypt(request):
             else:
                 return HttpResponse("error")
         else:
-            return HttpResponse("Error: No file uploaded")
+                        return HttpResponse("<script>alert('no file uploaded'); window.location.href='/userprofile';</script>")
+
     else:
 
         return redirect(userprofile)

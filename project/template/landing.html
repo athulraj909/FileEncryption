@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>File Encryption and Decryption</title>
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="{% static 'style1.css' %}">
   
   <style>
@@ -19,7 +19,6 @@
   
   .container {
     border-radius: 5px;
-    background-color: #333;
     color: white;
     width: 100vw;
     max-width: 700px;
@@ -198,7 +197,6 @@
 /* The container <div> - needed to position the dropdown content */
 .dropdown {
   position: relative;
-  padding-left: 800px;
   display: inline-block;
 }
 
@@ -240,7 +238,9 @@
   </style>
 
 
-
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
   <body>
 
@@ -248,22 +248,31 @@
     <h1>CRYPTEX</h1>
 
 
-    <div>
+    <div class="d-flex justify-content-center  ">
       <div class="dropdown">
-     <button onclick="myFunction()" class="dropbtn">Profile</button>
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          History
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a href="history"><button>Encrypted History</button></a>
+          <a href="history2"><button>Decrypted History</button></a>
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          profile
+        </button>
         
-        <div id="myDropdown" class="dropdown-content">
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
           <a href="#" style="margin: auto;">{{result.username}}</a>
           <a href="#"  style="margin: auto">{{result.password}}</a>
           <a href="{% url 'update' id=result.id %}"><button  id="editbutton"onclick="" class="editbutton" >edit</button></a>
         </div>
       </div>
-    <a href="HIstory/history.html" style="background-color: black;">
-      <button id="button" class="history_btn" >History</button></a>
+      <a href="logout"><button>Logout</button></a>
 
-      <a href="logout" style="background-color: black;">
-        <button id="button" class="history_btn" >Logout</button></a>
- 
     </div>
   </header>
 
@@ -300,8 +309,15 @@
             <label for="password">Enter a password:</label>
             <input type="password" id="password" name="password">
           </div>
-          <button id="encrypt_button">Encrypt files</button>
-        </form>
+          <div class="d-flex">
+
+            <button id="encrypt_button">Encrypt files</button>
+          </form>
+          <form action="select">
+            <button type="submit">Encrypted Files</button>
+          </form>
+        </div>
+
 
           <!-- <div id="download_encrypt_popup" >
             
@@ -337,8 +353,8 @@
           <p>Choose files to decrypt</p>
           <label for="file-upload">
             Drag & Drop or Browse files
-            <input type="file" id="file-upload" name="file">
           </label>
+          <input type="file" id="file-upload" name="file">
         </div>
     
         <!-- <input type="file" id="files" multiple> -->
@@ -355,9 +371,15 @@
           <input type="password" id="password" name="password">
         </div>
 
-        
-        <button id="decrypt_button" class="button">Decrypt files</button>
-      </form>
+        <div class="d-flex">
+
+          <button id="decrypt_button" class="button">Decrypt files</button>
+        </form>
+        <form action="select2">
+          <button type="submit">Decrypted Files</button>
+        </form>
+      </div>
+
         <!-- <div id="download_decrypt_popup" class="popup">
           <div class="popup-content">
               <h1 style="color:green;">
@@ -374,10 +396,7 @@
     </div>
   </div>
 
-  <a href="select"><button>Encrypted Files</button></a>
-  <a href="history"><button>Encrypted History</button></a>
-  <a href="select2"><button>Decrypted Files</button></a>
-  <a href="history2"><button>Decrypted History</button></a>
+
 
   <script src="{% static 'unjs.js' %}"></script>
 </body>
