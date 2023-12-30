@@ -7,6 +7,8 @@ from .models import User
 from .models import EncryptedFile
 from .models import DecryptionRequest
 from django.views.decorators.cache import cache_control
+from django.contrib.auth import authenticate,login
+from django.urls import reverse
 
 
 
@@ -39,10 +41,15 @@ def userregistration(request):
         return render(request,'register.html')
     
 
-def login(request):
+def logins(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
     context={'message':'Invalid User Credentials'}
+
+    admin_user = authenticate(request,username=username,password=password)
+    if admin_user is not None and admin_user.is_staff:
+        login(request,admin_user)
+        return redirect(reverse('admin:index'))
 
     if User.objects.filter(username=username,password=password).exists():
         userdetail=User.objects.get(username=request.POST['username'], password=password)

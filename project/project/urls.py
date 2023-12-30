@@ -26,7 +26,7 @@ urlpatterns = [
     path('',views.index),
     path('reg',views.reg),
     path('userregistration',views.userregistration),
-    path('login',views.login),
+    path('logins',views.logins),
     path('logout',views.logout),
     path('userprofile',views.userprofile),
     path('update/<int:id>',views.update, name='update'),
