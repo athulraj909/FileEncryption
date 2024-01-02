@@ -60,7 +60,7 @@ def logins(request):
                 print(id)
                 return redirect(userprofile)
             else:
-                return redirect(login)
+                return redirect(logins)
 
         else:
             return render(request,'login.html',context)
@@ -79,13 +79,12 @@ def logout(request):
 
 def userprofile(request):
     tem = request.session.get('uid')
-    print(tem)
     if tem:
         vpro = User.objects.get(id=tem)
         return render(request, 'landing.html', {'result': vpro})
     else:
         # Handle the case when 'uid' doesn't exist in the session
-        return redirect(login)
+        return redirect(logins)
 
 
 
@@ -95,8 +94,8 @@ def update(request,id):
     if(upt):
         return render(request,'profileedit.html',{'result':upt})
 
-def userupdate(request,id):
 
+def userupdate(request,id):
     if request.method=="POST":
         email=request.POST.get('email')
         username = request.POST.get('username')

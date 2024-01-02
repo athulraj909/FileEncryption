@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
     {% load static %}
 <head>
     <meta charset="UTF-8">
     <title>Encrypted Files</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <style>
 
-      table{
-        width: 50%;
-        margin-top: 100px;
+      body{
+        background-color: black;
       }
+
       
       caption{
         
@@ -20,8 +23,8 @@
         color: white;
       }
 
-      tr:nth-child(odd) {
-          background-color: #E7E9EB;
+      tr{
+        background-color: white;
       }
 
       a{
@@ -32,17 +35,10 @@
 
       td{
         height: 35px;
-        padding-left: 20px;
-      }
+        padding-left: 50px;
+      } 
 
-      button{
-        background-color: black;
-        color: white;
-        height: 26px;
-        font-size: 15px;
-        border-radius: 10px;
-        cursor:pointer;
-      }
+     
 
      
 
@@ -51,17 +47,21 @@
 </head>
 
 <body>
+  <a href="{% url 'userprofile' %}"><button class="btn btn-dark text-white float-end justify-content-around" style="margin-right: 50px;">Back</button></a>
+
     <div align="center" style="margin-top: 50px;">
-    
-    <table>
-      <caption>Encrypted Files</caption>
+    <h2 class="text-white">Encrypted Files</h2>
+    <div class="container">
+    <table class="table w-75 my-5 table-bordered table-striped table-hover table-dark">
         {% for encrypted_file in encrypted_files %}
         <tr>
           <td>{{ encrypted_file.file }}</td>
-          <td><a href="{{ encrypted_file.file.url }}" download><button>download</button></a></td>
+          <td align="end"><a href="{{ encrypted_file.file.url }}" download><button class="btn btn-danger ">download</button></a></td>
         </tr>
         {% endfor %}
     </table>
+  </div>
     </div>
 </body>
+
 </html>
