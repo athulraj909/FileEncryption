@@ -28,14 +28,14 @@ def userregistration(request):
         context={'message':'registerd successfully'}
 
         if User.objects.filter(username=username).exists():
-            return HttpResponse('Email already exists')
+            return render(request,'register.html',{'context':"Username already exists"})
 
         if User.objects.filter(email=email).exists():
-            return HttpResponse('Email already exists')
+            return render(request,'register.html',{'context':"Email already exists"})
         
         data = User(username=username,email=email,password=password)
         data.save()
-        return render(request,'login.html',context)
+        return render(request,'login.html')
     
     else:
         return render(request,'register.html')
@@ -76,7 +76,6 @@ def logout(request):
     return redirect(index)
     
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-
 def userprofile(request):
     tem = request.session.get('uid')
     if tem:
